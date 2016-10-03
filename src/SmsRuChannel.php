@@ -4,24 +4,32 @@ namespace NotificationChannels\SmsRu;
 
 use NotificationChannels\SmsRu\Exceptions\CouldNotSendNotification;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Event;
+use Zelenin\SmsRu\Entity\Sms;
+use Zelenin\SmsRu\Api;
 
 class SmsRuChannel
 {
     /**
-     * Sender
-     *
-     * @var \NotificationChannels\SmsRu\SmsRu
+     * @var \Zelenin\SmsRu\Api
      */
     protected $client;
 
     /**
-     * Channel constructor
-     *
-     * @param \NotificationChannels\SmsRu\SmsRu $client
+     * @var string
      */
-    public function __construct(SmsRu $client)
+    protected $sender;
+
+    /**
+     * Constructor
+     *
+     * @param Api    $client
+     * @param string $sender
+     */
+    public function __construct(Api $client, $sender = null)
     {
         $this->client = $client;
+        $this->sender = $sender;
     }
 
     /**
@@ -47,6 +55,14 @@ class SmsRuChannel
             $message->to($to);
         }
 
-        return $this->client->send($message);
+        if ($message->senderNotGiven()) {
+            $message->from($this->sender);
+        }
+
+        $sms = new Sms($message->number, $message->text);
+        $sms->from = $message->sender;
+        $response = $this->client->smsSend($sms);
+
+        Event::fire(new SmsWasSended($response, $notifiable));
     }
 }
