@@ -21,7 +21,7 @@ class SmsRuChannel
     protected $sender;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Api    $client
      * @param string $sender
@@ -49,7 +49,7 @@ class SmsRuChannel
         }
 
         if ($message->toNotGiven()) {
-            if (!$to = $notifiable->routeNotificationFor('sms_ru')) {
+            if (! $to = $notifiable->routeNotificationFor('sms_ru')) {
                 throw CouldNotSendNotification::missingRecipient();
             }
             $message->to($to);
