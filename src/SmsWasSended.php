@@ -2,7 +2,6 @@
 
 namespace NotificationChannels\SmsRu;
 
-use Illuminate\Queue\SerializesModels;
 use Zelenin\SmsRu\Response\SmsResponse;
 
 class SmsWasSended

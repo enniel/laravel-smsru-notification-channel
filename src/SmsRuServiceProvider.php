@@ -14,7 +14,6 @@ class SmsRuServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
     }
 
     /**
@@ -24,10 +23,12 @@ class SmsRuServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Api::class, function () {
             $apiId = Config::get('services.smsru.api_id', null);
+
             return new Api(new ApiIdAuth($apiId));
         });
         $this->app->singleton(SmsRuChannel::class, function ($app) {
             $sender = Config::get('services.smsru.sender', null);
+
             return new SmsRuChannel($app->make(Api::class), $sender);
         });
     }

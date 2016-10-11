@@ -39,9 +39,8 @@ class SmsRuMessage
         return new static($text);
     }
 
-
     /**
-     * Notification text
+     * Notification text.
      *
      * @param $text
      *
@@ -55,7 +54,7 @@ class SmsRuMessage
     }
 
     /**
-     * Set sender
+     * Set sender.
      *
      * @param $sender
      *
@@ -89,7 +88,7 @@ class SmsRuMessage
      */
     public function toNotGiven()
     {
-        return !$this->number;
+        return ! $this->number;
     }
 
     /**
@@ -99,6 +98,6 @@ class SmsRuMessage
      */
     public function senderNotGiven()
     {
-        return !$this->sender;
+        return ! $this->sender;
     }
 }
